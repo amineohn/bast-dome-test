@@ -8,21 +8,21 @@ generator client {
 }
 
 model Account {
-  id                String     @id @default(cuid())
+  id                String      @id @default(cuid())
   userId            String
-  permissionId      String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?    @db.Text
-  access_token      String?    @db.Text
+  refresh_token     String?     @db.Text
+  access_token      String?     @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?    @db.Text
+  id_token          String?     @db.Text
   session_state     String?
-  permission        Permission @relation(fields: [permissionId], references: [id])
-  user              User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Permission        Permission? @relation(fields: [permissionId], references: [id])
+  permissionId      String?
 
   @@unique([provider, providerAccountId])
 }
@@ -32,6 +32,7 @@ model Permission {
   permissionId Int?
   name         String
   Account      Account[]
+  User         User[]
 
   @@unique([permissionId, id])
 }
@@ -45,11 +46,13 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
+  permissionId  String
   image         String?
+  permission    Permission @relation(fields: [permissionId], references: [id])
   accounts      Account[]
   sessions      Session[]
 }
