@@ -6,7 +6,8 @@ type Database = {
   pool: Pool
   dialect: PostgresDialect
 }
-export const db = new Kysely<Database>({
+
+const postgresDialect = {
   dialect: new PostgresDialect({
     pool: new Pool({
       host: "localhost",
@@ -14,4 +15,6 @@ export const db = new Kysely<Database>({
     }),
     cursor: Cursor,
   }),
-})
+}
+
+export const db = new Kysely<Database>(postgresDialect)
