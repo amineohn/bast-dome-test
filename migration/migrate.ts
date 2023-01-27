@@ -4,7 +4,7 @@ import { FileMigrationProvider, Migrator } from "kysely"
 
 import { db } from "@/lib/kysely"
 
-async function onMigrate() {
+export default async function onMigrate(): Promise<void> {
   const migrator = new Migrator({
     db,
     provider: new FileMigrationProvider({
@@ -34,7 +34,5 @@ async function onMigrate() {
     process.exit(1)
   }
 
-  await db.destroy()
+  return await db.destroy()
 }
-
-onMigrate()
