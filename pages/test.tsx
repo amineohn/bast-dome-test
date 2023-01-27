@@ -42,6 +42,7 @@ export default function Test() {
   const createCheckOutSession = async () => {
     setLoading(true)
     const stripe = await stripePromise
+
     const checkoutSession = await axios.post("/api/create-session", {
       item: item,
     })
